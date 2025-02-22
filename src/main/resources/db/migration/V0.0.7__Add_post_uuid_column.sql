@@ -1,0 +1,4 @@
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
+ALTER TABLE user_post
+ADD COLUMN post_uuid UUID UNIQUE;
