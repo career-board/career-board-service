@@ -27,8 +27,7 @@ class PostRepositoryTest {
     void setUp() {
         user = new User();
         user.setUsername("j.doe");
-        user.setFirstName("John");
-        user.setLastName("Doe");
+        user.setCurrentCompany("Abc Inc.");
         user.setCreatedAt(LocalDateTime.now());
         entityManager.persist(user);
         entityManager.flush();

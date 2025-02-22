@@ -44,8 +44,7 @@ class PostServiceTest {
         User user = new User();
         user.setUserId(1L);
         user.setUsername("j.doe");
-        user.setFirstName("John");
-        user.setLastName("Doe");
+        user.setCurrentCompany("Abc Inc.");
 
         Post post = new Post();
         post.setUser(user);

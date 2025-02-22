@@ -1,5 +1,6 @@
 package net.careerboard.services;
 
+import net.careerboard.dto.UserResponse;
 import net.careerboard.models.User;
 import net.careerboard.repos.UserRepo;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,7 +33,7 @@ class UserServiceTest {
         User user = new User();
         when(userRepo.save(any(User.class))).thenReturn(user);
 
-        User createdUser = userService.addUser(user);
+        UserResponse createdUser = userService.addUser(user);
 
         assertEquals(user, createdUser);
         verify(userRepo, times(1)).save(user);
