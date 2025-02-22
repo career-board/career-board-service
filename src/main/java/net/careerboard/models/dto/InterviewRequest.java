@@ -8,7 +8,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostRequest {
+public class InterviewRequest {
     private Long userId;
     private String title;
     private String content;

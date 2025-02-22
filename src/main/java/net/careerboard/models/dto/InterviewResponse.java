@@ -4,16 +4,15 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Builder
-public class PostResponse {
+public class InterviewResponse {
 
     private Long userId;
     private String username;
     private String title;
     private String status;
-    private Long postId;
+    private Long interviewId;
     private LocalDateTime createdAt;
 }

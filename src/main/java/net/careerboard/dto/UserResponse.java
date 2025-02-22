@@ -20,5 +20,5 @@ public class UserResponse {
     private LocalDateTime updatedAt;
     private Boolean active;
     private String role;
-    private int postCount;
+    private int interviewCount;
 }

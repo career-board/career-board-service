@@ -1,6 +1,6 @@
 package net.careerboard.models;
 
-public enum PostLifecycle {
+public enum InterviewLifecycle {
     DRAFT,
     PUBLISHED,
     ARCHIVED,

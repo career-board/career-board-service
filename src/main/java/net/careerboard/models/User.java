@@ -52,7 +52,7 @@ public class User {
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<Post> posts = new ArrayList<>();
+    private List<Interview> interviews = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "role")

@@ -12,12 +12,12 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@Table(name = "user_post")
-public class Post {
+@Table(name = "user_interview")
+public class Interview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postId;
+    private Long interviewId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
@@ -35,18 +35,18 @@ public class Post {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "status")
-    private PostLifecycle status;
+    private InterviewLifecycle status;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "interview", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<PostImage> images;
+    private List<InterviewImage> images;
 
     @Column(name = "moderator_comment")
     private String moderatorComment;
 
     @Override
     public String toString() {
-        return "Post{" +
+        return "Interview{" +
                 "user=" + user +
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
