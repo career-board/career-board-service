@@ -11,7 +11,7 @@ public class InterviewResponse {
 
     private Long userId;
     private String username;
-    private String title;
+    private String description;
     private String status;
     private Long interviewId;
     private LocalDateTime createdAt;

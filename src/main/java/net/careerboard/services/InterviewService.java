@@ -39,7 +39,7 @@ public class InterviewService {
                 User user = userOptional.get();
                 Interview interview = new Interview();
                 interview.setUser(user);
-                interview.setTitle(request.getTitle());
+                interview.setDescription(request.getDescription());
                 interview.setContent(request.getContent());
                 interview.setCreatedAt(LocalDateTime.now());
                 interview.setStatus(InterviewLifecycle.valueOf(request.getStatus()));
@@ -75,7 +75,7 @@ public class InterviewService {
                 .interviewId(interview.getInterviewId())
                 .userId(interview.getUser().getUserId())
                 .username(interview.getUser().getUsername())
-                .title(interview.getTitle())
+                .description(interview.getDescription())
                 .status(interview.getStatus().name())
                 .createdAt(interview.getCreatedAt())
                 .build();
@@ -99,7 +99,7 @@ public class InterviewService {
                     .interviewId(interview.getInterviewId())
                     .userId(interview.getUser().getUserId())
                     .username(interview.getUser().getUsername())
-                    .title(interview.getTitle())
+                    .description(interview.getDescription())
                     .content(interview.getContent())
                     .createdAt(interview.getCreatedAt())
                     .status(interview.getStatus().name())
@@ -120,7 +120,7 @@ public class InterviewService {
                 Interview interview = new Interview();
                 interview.setInterviewId(request.getInterviewId());
                 interview.setUser(user);
-                interview.setTitle(request.getTitle());
+                interview.setDescription(request.getDescription());
                 interview.setContent(request.getContent());
                 interview.setCreatedAt(LocalDateTime.now());
                 interview.setStatus(InterviewLifecycle.valueOf(request.getStatus()));

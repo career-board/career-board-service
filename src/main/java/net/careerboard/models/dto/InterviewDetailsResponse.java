@@ -13,7 +13,7 @@ import java.util.List;
 public class InterviewDetailsResponse {
     private Long userId;
     private String username;
-    private String title;
+    private String description;
     private String content;
     private String status;
     private Long interviewId;

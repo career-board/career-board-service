@@ -3,6 +3,7 @@ package net.careerboard.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,8 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "user_interview")
 public class Interview {
 
@@ -25,7 +25,7 @@ public class Interview {
     private User user;
 
     @Column(nullable = false)
-    private String title;
+    private String description;
 
     @Column(nullable = false)
     private String content;
@@ -43,19 +43,6 @@ public class Interview {
 
     @Column(name = "moderator_comment")
     private String moderatorComment;
-
-    @Override
-    public String toString() {
-        return "Interview{" +
-                "user=" + user +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", createdAt=" + createdAt +
-                ", status=" + status +
-                ", images=" + images +
-                ", moderatorComment='" + moderatorComment + '\'' +
-                '}';
-    }
 
     public String getUsername() {
         return user.getUsername();

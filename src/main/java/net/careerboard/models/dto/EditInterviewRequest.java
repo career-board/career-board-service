@@ -9,7 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 public class EditInterviewRequest {
     private Long userId;
-    private String title;
+    private String description;
     private String content;
     private String status;
     private List<InterviewImageDto> images;

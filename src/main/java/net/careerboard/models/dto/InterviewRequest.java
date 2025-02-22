@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 public class InterviewRequest {
     private Long userId;
-    private String title;
+    private String description;
     private String content;
     private String status;
     private List<String> imageNames;
