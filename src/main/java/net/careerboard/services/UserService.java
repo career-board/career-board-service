@@ -67,7 +67,7 @@ public class UserService {
                 .createdAt(user.getCreatedAt())
                 .active(user.getActive())
                 .role(user.getRole().name())
-                .postCount(user.getPosts().size())
+                .interviewCount(user.getInterviews().size())
                 .build();
     }
 

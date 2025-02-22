@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PostImageDto {
+public class InterviewImageDto {
 
     private Long imageId;
     private String imageName;

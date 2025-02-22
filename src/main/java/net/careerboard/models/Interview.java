@@ -3,6 +3,7 @@ package net.careerboard.models;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,14 +11,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@Table(name = "user_post")
-public class Post {
+@Data
+@Table(name = "user_interview")
+public class Interview {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long postId;
+    private Long interviewId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId", nullable = false)
@@ -25,7 +25,7 @@ public class Post {
     private User user;
 
     @Column(nullable = false)
-    private String title;
+    private String description;
 
     @Column(nullable = false)
     private String content;
@@ -35,27 +35,14 @@ public class Post {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "status")
-    private PostLifecycle status;
+    private InterviewLifecycle status;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "interview", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<PostImage> images;
+    private List<InterviewImage> images;
 
     @Column(name = "moderator_comment")
     private String moderatorComment;
-
-    @Override
-    public String toString() {
-        return "Post{" +
-                "user=" + user +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                ", createdAt=" + createdAt +
-                ", status=" + status +
-                ", images=" + images +
-                ", moderatorComment='" + moderatorComment + '\'' +
-                '}';
-    }
 
     public String getUsername() {
         return user.getUsername();
