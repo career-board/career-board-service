@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.mockito.Mockito.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import net.careerboard.dto.UserResponse;
 import net.careerboard.models.User;
 import net.careerboard.services.UserService;
 import org.junit.jupiter.api.Test;
@@ -37,14 +38,12 @@ public class UserControllerTest {
     @Test
     public void testCreateUserSuccess() throws Exception {
         User user = new User();
-        user.setFirstName("John");
-        user.setLastName("Doe");
+        user.setCurrentCompany("Abc Inc.");
         user.setUsername("john.doe");
 
-        User createdUser = new User();
+        UserResponse createdUser = new UserResponse();
         createdUser.setUserId(1L);
-        createdUser.setFirstName("John");
-        createdUser.setLastName("Doe");
+        createdUser.setCurrentCompany("Abc Inc.");
         createdUser.setUsername("john.doe");
 
         when(userService.addUser(any(User.class))).thenReturn(createdUser);
@@ -59,8 +58,7 @@ public class UserControllerTest {
     @Test
     public void testCreateUserFailure() throws Exception {
         User user = new User();
-        user.setFirstName("John");
-        user.setLastName("Doe");
+        user.setCurrentCompany("Abc Inc.");
         user.setUsername("john.doe");
 
         when(userService.addUser(any(User.class))).thenThrow(new RuntimeException("User creation failed"));

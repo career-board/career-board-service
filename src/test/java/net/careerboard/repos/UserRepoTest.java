@@ -17,9 +17,8 @@ class UserRepoTest {
     @Test
     public void testSaveAndFindById() {
         User user = new User();
-        user.setFirstName("John");
         user.setUsername("john.doe");
-        user.setLastName("Doe");
+        user.setCurrentCompany("Abc Inc.");
 
         // Save the user
         User savedUser = userRepo.save(user);
@@ -30,7 +29,6 @@ class UserRepoTest {
         // Verify the user details
         assertThat(foundUser).isPresent();
         assertThat(foundUser.get().getUsername()).isEqualTo("john.doe");
-        assertThat(foundUser.get().getFirstName()).isEqualTo("John");
-        assertThat(foundUser.get().getLastName()).isEqualTo("Doe");
+        assertThat(foundUser.get().getCurrentCompany()).isEqualTo("Abc Inc.");
     }
 }
