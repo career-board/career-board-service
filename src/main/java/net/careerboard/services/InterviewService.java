@@ -51,6 +51,9 @@ public class InterviewService {
                 }).toList();
                 interview.setImages(interviewImageList);
 
+                String moderatorComment = getModeratorComment(request.getModeratorComment(), interview);
+                interview.setModeratorComment(moderatorComment);
+
                 return interviewRepository.save(interview);
             } else {
                 throw new BadRequestException("User with ID %d not found!".formatted(request.getUserId()));
@@ -59,6 +62,18 @@ public class InterviewService {
             System.out.println(e.getMessage());
             throw new BadRequestException(e.getMessage());
         }
+    }
+
+    private static String getModeratorComment(String request, Interview interview) {
+        Set<String> rolesWithCommentPermission = Set.of("MODERATOR", "ADMIN");
+        SecurityContext context = SecurityContextHolder.getContext();
+        List<String> list = context.getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+        System.out.println(list);
+        if (rolesWithCommentPermission.contains(list.get(0))) {
+            System.out.println(request);
+            return request;
+        }
+        return null;
     }
 
     public Page<InterviewResponse> findAllInterviews(Pageable pageable) {
@@ -125,14 +140,8 @@ public class InterviewService {
                 interview.setCreatedAt(LocalDateTime.now());
                 interview.setStatus(InterviewLifecycle.valueOf(request.getStatus()));
                 interview.setStatus(InterviewLifecycle.valueOf(request.getStatus()));
-                Set<String> rolesWithCommentPermission = Set.of("MODERATOR", "ADMIN");
-                SecurityContext context = SecurityContextHolder.getContext();
-                List<String> list = context.getAuthentication().getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
-                System.out.println(list);
-                if (rolesWithCommentPermission.contains(list.get(0))) {
-                    System.out.println(request.getModeratorComment());
-                    interview.setModeratorComment(request.getModeratorComment());
-                }
+                String moderatorComment = getModeratorComment(request.getModeratorComment(), interview);
+                interview.setModeratorComment(moderatorComment);
                 List<InterviewImage> interviewImageList = request.getImages().stream().map(image -> {
                     InterviewImage interviewImage = new InterviewImage();
                     interviewImage.setImageName(image.getImageName());

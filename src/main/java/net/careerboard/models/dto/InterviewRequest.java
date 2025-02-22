@@ -14,4 +14,5 @@ public class InterviewRequest {
     private String content;
     private String status;
     private List<String> imageNames;
+    private String moderatorComment;
 }
