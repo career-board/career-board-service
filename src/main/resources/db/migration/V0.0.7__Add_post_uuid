@@ -1,2 +1,0 @@
-ALTER TABLE user_post
-ADD COLUMN post_uuid UUID DEFAULT uuid_generate_v4();
