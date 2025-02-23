@@ -21,4 +21,5 @@ public class UserResponse {
     private Boolean active;
     private String role;
     private int interviewCount;
+    private String email;
 }

@@ -2,9 +2,9 @@ package net.careerboard.controllers;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import net.careerboard.models.User;
 import net.careerboard.models.dto.LoginRequest;
 import net.careerboard.models.dto.ResDto;
+import net.careerboard.models.dto.UserRegistrationRequest;
 import net.careerboard.security.jwt.JwtUtil;
 import net.careerboard.services.AuthService;
 import org.springframework.http.HttpStatus;
@@ -24,8 +24,8 @@ public class AuthController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/register")
-    public ResponseEntity<ResDto<Object>> registerUser(@Valid @RequestBody User user) {
-        ResDto<Object> response = authService.registerUser(user);
+    public ResponseEntity<ResDto<Object>> registerUser(@Valid @RequestBody UserRegistrationRequest request) {
+        ResDto<Object> response = authService.registerUser(request);
         if (response.getSuccess()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(response);
         } else {
