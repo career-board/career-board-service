@@ -20,4 +20,5 @@ public class InterviewDetailsResponse {
     private LocalDateTime createdAt;
     private String moderatorComment;
     private List<InterviewImageDto> images;
+    private long typeId;
 }

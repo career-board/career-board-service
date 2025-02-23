@@ -24,6 +24,11 @@ public class Interview {
     @JsonBackReference
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "type_id", nullable = false)
+    @JsonBackReference
+    private InterviewType interviewType;
+
     @Column(nullable = false)
     private String description;
 

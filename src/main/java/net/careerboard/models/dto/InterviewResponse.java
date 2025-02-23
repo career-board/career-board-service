@@ -15,4 +15,5 @@ public class InterviewResponse {
     private String status;
     private Long interviewId;
     private LocalDateTime createdAt;
+    private long typeId;
 }

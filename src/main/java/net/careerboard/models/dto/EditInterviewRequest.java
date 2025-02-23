@@ -15,4 +15,5 @@ public class EditInterviewRequest {
     private List<InterviewImageDto> images;
     private Long interviewId;
     private String moderatorComment;
+    private Long typeId;
 }
