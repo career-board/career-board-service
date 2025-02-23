@@ -25,7 +25,11 @@ public class UserService {
     }
 
     public boolean existsByUsername(String username) {
-        return userRepo.findByUsername(username).isPresent();
+        return userRepo.existsByUsername(username);
+    }
+
+    public boolean existsByEmail(String email) {
+        return userRepo.existsByEmail(email);
     }
 
     public UserResponse addUser(CreateUserRequest createUserRequest) throws Exception {
@@ -67,7 +71,9 @@ public class UserService {
                 .createdAt(user.getCreatedAt())
                 .active(user.getActive())
                 .role(user.getRole().name())
-                .interviewCount(user.getInterviews().size())
+                .interviewCount(user.getInterviews() != null ? user.getInterviews().size() : 0)
+                .updatedAt(user.getUpdatedAt())
+                .email(user.getEmail())
                 .build();
     }
 

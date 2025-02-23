@@ -16,6 +16,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -29,30 +31,42 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final UserRepo userRepo;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public ResDto<Object> registerUser(User user) {
+    public ResDto<Object> registerUser(UserRegistrationRequest request) {
         try {
-            if (userService.existsByUsername(user.getUsername())) {
-                return new ResDto<>(Boolean.FALSE, ResDTOMessage.USERNAME_ALREADY_EXIST, user.getUsername());
+            // Check if username already exists
+            if (userService.existsByUsername(request.getUsername())) {
+                return new ResDto<>(Boolean.FALSE, ResDTOMessage.USERNAME_ALREADY_EXIST, request.getUsername());
             }
+
+            // Check if email already exists
+            if (userService.existsByEmail(request.getEmail())) {
+                return new ResDto<>(Boolean.FALSE, ResDTOMessage.EMAIL_ALREADY_EXIST, request.getEmail());
+            }
+
+            // Create new user
+            User user = User.builder()
+                    .username(request.getUsername())
+                    .email(request.getEmail())
+                    .password(request.getPassword())
+                    .role(Role.USER)
+                    .active(true)
+                    .currentCompany(request.getCurrentCompany())
+                    .build();
 
             validateUser(user);
 
-            user.setRole(Role.USER);
+            // Save user without the raw password
             UserResponse userResponse = userService.addUser(user);
 
             return new ResDto<>(Boolean.TRUE, ResDTOMessage.CREATED, userResponse);
-        } catch (ConstraintViolationException e) {
-            String errors = e.getConstraintViolations()
-                    .stream()
-                    .map(violation -> violation.getPropertyPath() + " " + violation.getMessage())
-                    .collect(Collectors.joining(", "));
-            return new ResDto<>(Boolean.FALSE, ResDTOMessage.VALIDATION_ERROR, errors);
+
         } catch (DataIntegrityViolationException e) {
-            return new ResDto<>(Boolean.FALSE, ResDTOMessage.DATABASE_CONSTRAINT_VIOLATION, e.getRootCause().getMessage());
+            return new ResDto<>(Boolean.FALSE, ResDTOMessage.DATABASE_CONSTRAINT_VIOLATION, e.getMessage());
         } catch (Exception e) {
-            return new ResDto<>(Boolean.FALSE, ResDTOMessage.UNEXPECTED_ERROR, e.getMessage());
+            return new ResDto<>(Boolean.FALSE, ResDTOMessage.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
@@ -61,25 +75,17 @@ public class AuthService {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password())
             );
-            Optional<User> optionalUser = userRepo.findByUsername(loginRequest.username());
-            if (optionalUser.isEmpty()) {
-                return new ResDto<>(Boolean.FALSE, ResDTOMessage.NOT_FOUND, loginRequest.username());
 
-            }
-            if (!optionalUser.get().getActive()) {
-                return new ResDto<>(Boolean.FALSE, ResDTOMessage.NOT_FOUND, loginRequest.username());
-            }
-            User user = optionalUser.get();
+            User user = userRepo.findByUsername(loginRequest.username())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
             String token = jwtUtil.generateToken(user);
-
-            System.err.println(token);
-
             AuthResponse authResponse = new AuthResponse(token);
             return new ResDto<>(Boolean.TRUE, ResDTOMessage.SUCCESS, authResponse);
         } catch (BadCredentialsException e) {
             return new ResDto<>(Boolean.FALSE, ResDTOMessage.WRONG_USERNAME_OR_PASSWORD, null);
         } catch (Exception e) {
-            return new ResDto<>(Boolean.FALSE, ResDTOMessage.NOT_FOUND, null);
+            return new ResDto<>(Boolean.FALSE, ResDTOMessage.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
