@@ -41,6 +41,8 @@ public class InterviewService {
                 interview.setContent(request.getContent());
                 interview.setCreatedAt(LocalDateTime.now());
                 interview.setStatus(InterviewLifecycle.valueOf(request.getStatus()));
+                interview.setCompany(request.getCompany());
+                interview.setInterviewDate(request.getInterviewDate());
                 List<InterviewImage> interviewImageList = request.getImageNames().stream().map(imageName -> {
                     InterviewImage interviewImage = new InterviewImage();
                     interviewImage.setImageName(imageName);
@@ -94,6 +96,8 @@ public class InterviewService {
                 .status(interview.getStatus().name())
                 .createdAt(interview.getCreatedAt())
                 .typeId(interview.getInterviewType().getTypeId())
+                .company(interview.getCompany())
+                .interviewDate(interview.getInterviewDate())
                 .build();
     }
 
@@ -125,13 +129,16 @@ public class InterviewService {
                 .username(interview.getUser().getUsername())
                 .description(interview.getDescription())
                 .content(interview.getContent())
-                .createdAt(interview.getCreatedAt())
                 .status(interview.getStatus().name())
+                .interviewId(interview.getInterviewId())
+                .createdAt(interview.getCreatedAt())
+                .company(interview.getCompany())
+                .interviewDate(interview.getInterviewDate())
+                .moderatorComment(interview.getModeratorComment())
                 .images(interview.getImages().stream().map(interviewImage -> InterviewImageDto.builder()
                         .imageId(interviewImage.getImageId())
                         .imageName(interviewImage.getImageName())
                         .build()).toList())
-                .moderatorComment(interview.getModeratorComment())
                 .typeId(interview.getInterviewType().getTypeId())
                 .build();
     }
@@ -148,7 +155,8 @@ public class InterviewService {
                 interview.setContent(request.getContent());
                 interview.setCreatedAt(LocalDateTime.now());
                 interview.setStatus(InterviewLifecycle.valueOf(request.getStatus()));
-                interview.setStatus(InterviewLifecycle.valueOf(request.getStatus()));
+                interview.setCompany(request.getCompany());
+                interview.setInterviewDate(request.getInterviewDate());
                 String moderatorComment = getModeratorComment(request.getModeratorComment(), interview);
                 interview.setModeratorComment(moderatorComment);
                 List<InterviewImage> interviewImageList = request.getImages().stream().map(image -> {

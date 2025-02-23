@@ -16,4 +16,6 @@ public class InterviewResponse {
     private Long interviewId;
     private LocalDateTime createdAt;
     private long typeId;
+    private String company;
+    private LocalDateTime interviewDate;
 }

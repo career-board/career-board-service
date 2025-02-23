@@ -2,6 +2,7 @@ package net.careerboard.models.dto;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -16,4 +17,6 @@ public class EditInterviewRequest {
     private Long interviewId;
     private String moderatorComment;
     private Long typeId;
+    private String company;
+    private LocalDateTime interviewDate;
 }
