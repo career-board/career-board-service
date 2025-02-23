@@ -19,5 +19,8 @@ public class InterviewDetailsResponse {
     private Long interviewId;
     private LocalDateTime createdAt;
     private String moderatorComment;
+    private String company;
+    private LocalDateTime interviewDate;
     private List<InterviewImageDto> images;
+    private long typeId;
 }

@@ -2,6 +2,7 @@ package net.careerboard.services;
 
 import net.careerboard.models.Interview;
 import net.careerboard.models.User;
+import net.careerboard.models.dto.InterviewDetailsResponse;
 import net.careerboard.models.dto.InterviewRequest;
 import net.careerboard.repos.InterviewRepository;
 import net.careerboard.repos.UserRepo;
@@ -60,10 +61,10 @@ class InterviewServiceTest {
 
 
         // Act
-        Interview createdInterview = interviewService.createInterview(interviewRequest);
+        InterviewDetailsResponse createdInterview = interviewService.createInterview(interviewRequest);
 
         // Assert
-        assertEquals(interview, createdInterview);
+        assertEquals(interview.getInterviewId(), createdInterview.getInterviewId());
         verify(interviewRepository, times(1)).save(any(Interview.class));
     }
 
@@ -84,9 +85,9 @@ class InterviewServiceTest {
         List<Interview> interviews = Arrays.asList(new Interview(), new Interview());
         when(interviewRepository.findByUserUserId(userId)).thenReturn(interviews);
 
-        List<Interview> foundInterviews = interviewService.findInterviewsByUserId(userId);
+        List<InterviewDetailsResponse> foundInterviews = interviewService.findInterviewsByUserId(userId);
 
-        assertEquals(interviews, foundInterviews);
+        assertEquals(interviews.size(), foundInterviews.size());
         verify(interviewRepository, times(1)).findByUserUserId(userId);
     }
 

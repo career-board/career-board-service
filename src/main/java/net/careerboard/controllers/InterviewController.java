@@ -35,8 +35,8 @@ public class InterviewController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Interview>> getInterviewsByUserId(@PathVariable Long userId) {
-        List<Interview> interviews = interviewService.findInterviewsByUserId(userId);
+    public ResponseEntity<List<InterviewDetailsResponse>> getInterviewsByUserId(@PathVariable Long userId) {
+        List<InterviewDetailsResponse> interviews = interviewService.findInterviewsByUserId(userId);
         if (interviews.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else {
@@ -61,7 +61,7 @@ public class InterviewController {
     @PostMapping
     public ResponseEntity<?> createInterview(@RequestBody InterviewRequest request) {
         try {
-            Interview savedInterview = interviewService.createInterview(request);
+            InterviewDetailsResponse savedInterview = interviewService.createInterview(request);
             System.out.println("Interview created successfully");
             return ResponseEntity.ok(savedInterview);
         } catch (Exception e) {
@@ -74,7 +74,7 @@ public class InterviewController {
     @PutMapping
     public ResponseEntity<?> editInterview(@RequestBody EditInterviewRequest request) {
         try {
-            Interview editInterview = interviewService.editInterview(request);
+            InterviewDetailsResponse editInterview = interviewService.editInterview(request);
             System.out.println("Interview Edit successfully");
             return ResponseEntity.ok(editInterview);
         } catch (Exception e) {

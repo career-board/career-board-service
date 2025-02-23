@@ -1,10 +1,7 @@
 package net.careerboard.services;
 
 import lombok.RequiredArgsConstructor;
-import net.careerboard.models.Interview;
-import net.careerboard.models.InterviewImage;
-import net.careerboard.models.InterviewLifecycle;
-import net.careerboard.models.User;
+import net.careerboard.models.*;
 import net.careerboard.models.dto.EditInterviewRequest;
 import net.careerboard.models.dto.InterviewDetailsResponse;
 import net.careerboard.models.dto.InterviewImageDto;
@@ -31,8 +28,9 @@ import java.util.Set;
 public class InterviewService {
     private final InterviewRepository interviewRepository;
     private final UserService userService;
+    private final InterviewTypeService interviewTypeService;
 
-    public Interview createInterview(InterviewRequest request) throws BadRequestException {
+    public InterviewDetailsResponse createInterview(InterviewRequest request) throws BadRequestException {
         try {
             Optional<User> userOptional = userService.findById(request.getUserId());
             if (userOptional.isPresent()) {
@@ -43,6 +41,8 @@ public class InterviewService {
                 interview.setContent(request.getContent());
                 interview.setCreatedAt(LocalDateTime.now());
                 interview.setStatus(InterviewLifecycle.valueOf(request.getStatus()));
+                interview.setCompany(request.getCompany());
+                interview.setInterviewDate(request.getInterviewDate());
                 List<InterviewImage> interviewImageList = request.getImageNames().stream().map(imageName -> {
                     InterviewImage interviewImage = new InterviewImage();
                     interviewImage.setImageName(imageName);
@@ -50,11 +50,13 @@ public class InterviewService {
                     return interviewImage;
                 }).toList();
                 interview.setImages(interviewImageList);
+                InterviewType interviewType = interviewTypeService.findById(request.getTypeId());
+                interview.setInterviewType(interviewType);
 
                 String moderatorComment = getModeratorComment(request.getModeratorComment(), interview);
                 interview.setModeratorComment(moderatorComment);
 
-                return interviewRepository.save(interview);
+                return mapToInterviewDetailsResponse(interviewRepository.save(interview));
             } else {
                 throw new BadRequestException("User with ID %d not found!".formatted(request.getUserId()));
             }
@@ -93,11 +95,17 @@ public class InterviewService {
                 .description(interview.getDescription())
                 .status(interview.getStatus().name())
                 .createdAt(interview.getCreatedAt())
+                .typeId(interview.getInterviewType().getTypeId())
+                .company(interview.getCompany())
+                .interviewDate(interview.getInterviewDate())
                 .build();
     }
 
-    public List<Interview> findInterviewsByUserId(Long userId) {
-        return this.interviewRepository.findByUserUserIdOrderByCreatedAtDesc(userId);
+    public List<InterviewDetailsResponse> findInterviewsByUserId(Long userId) {
+        return this.interviewRepository.findByUserUserIdOrderByCreatedAtDesc(userId)
+                .stream()
+                .map(InterviewService::mapToInterviewDetailsResponse)
+                .toList();
     }
 
     public List<Interview> findPublishedInterviewsByUserId(Long userId) {
@@ -110,24 +118,32 @@ public class InterviewService {
             throw new BadRequestException("Interview with ID %d not found!".formatted(interviewId));
         } else {
             Interview interview = optionalInterview.get();
-            return InterviewDetailsResponse.builder()
-                    .interviewId(interview.getInterviewId())
-                    .userId(interview.getUser().getUserId())
-                    .username(interview.getUser().getUsername())
-                    .description(interview.getDescription())
-                    .content(interview.getContent())
-                    .createdAt(interview.getCreatedAt())
-                    .status(interview.getStatus().name())
-                    .images(interview.getImages().stream().map(interviewImage -> InterviewImageDto.builder()
-                            .imageId(interviewImage.getImageId())
-                            .imageName(interviewImage.getImageName())
-                            .build()).toList())
-                    .moderatorComment(interview.getModeratorComment())
-                    .build();
+            return mapToInterviewDetailsResponse(interview);
         }
     }
 
-    public Interview editInterview(EditInterviewRequest request) throws BadRequestException {
+    private static InterviewDetailsResponse mapToInterviewDetailsResponse(Interview interview) {
+        return InterviewDetailsResponse.builder()
+                .interviewId(interview.getInterviewId())
+                .userId(interview.getUser().getUserId())
+                .username(interview.getUser().getUsername())
+                .description(interview.getDescription())
+                .content(interview.getContent())
+                .status(interview.getStatus().name())
+                .interviewId(interview.getInterviewId())
+                .createdAt(interview.getCreatedAt())
+                .company(interview.getCompany())
+                .interviewDate(interview.getInterviewDate())
+                .moderatorComment(interview.getModeratorComment())
+                .images(interview.getImages().stream().map(interviewImage -> InterviewImageDto.builder()
+                        .imageId(interviewImage.getImageId())
+                        .imageName(interviewImage.getImageName())
+                        .build()).toList())
+                .typeId(interview.getInterviewType().getTypeId())
+                .build();
+    }
+
+    public InterviewDetailsResponse editInterview(EditInterviewRequest request) throws BadRequestException {
         try {
             Optional<User> userOptional = userService.findById(request.getUserId());
             if (userOptional.isPresent()) {
@@ -139,7 +155,8 @@ public class InterviewService {
                 interview.setContent(request.getContent());
                 interview.setCreatedAt(LocalDateTime.now());
                 interview.setStatus(InterviewLifecycle.valueOf(request.getStatus()));
-                interview.setStatus(InterviewLifecycle.valueOf(request.getStatus()));
+                interview.setCompany(request.getCompany());
+                interview.setInterviewDate(request.getInterviewDate());
                 String moderatorComment = getModeratorComment(request.getModeratorComment(), interview);
                 interview.setModeratorComment(moderatorComment);
                 List<InterviewImage> interviewImageList = request.getImages().stream().map(image -> {
@@ -152,8 +169,10 @@ public class InterviewService {
                     return interviewImage;
                 }).toList();
                 interview.setImages(interviewImageList);
+                InterviewType interviewType = interviewTypeService.findById(request.getTypeId());
+                interview.setInterviewType(interviewType);
 
-                return interviewRepository.save(interview);
+                return mapToInterviewDetailsResponse(interviewRepository.save(interview));
             } else {
                 throw new BadRequestException("User with ID %d not found!".formatted(request.getUserId()));
             }
