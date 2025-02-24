@@ -96,6 +96,7 @@ public class InterviewService {
                 .status(interview.getStatus().name())
                 .createdAt(interview.getCreatedAt())
                 .typeId(interview.getInterviewType().getTypeId())
+                .typeName(interview.getInterviewType().getName())
                 .company(interview.getCompany())
                 .interviewDate(interview.getInterviewDate())
                 .build();
@@ -140,6 +141,7 @@ public class InterviewService {
                         .imageName(interviewImage.getImageName())
                         .build()).toList())
                 .typeId(interview.getInterviewType().getTypeId())
+                .typeName(interview.getInterviewType().getName())
                 .build();
     }
 
