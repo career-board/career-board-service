@@ -67,3 +67,5 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 /.env
 /.env.production
+.env
+.env.production

@@ -38,14 +38,14 @@ class InterviewRepositoryTest {
         Interview interview1 = new Interview();
         interview1.setUser(user);
         interview1.setDescription("Interview 1 title");
-        interview1.setContent("Interview 1 content");
+        interview1.setDetails("Interview 1 content");
         interview1.setCreatedAt(LocalDateTime.now());
         entityManager.persist(interview1);
 
         Interview interview2 = new Interview();
         interview2.setUser(user);
         interview2.setDescription("Interview 2 title");
-        interview2.setContent("Interview 2 content");
+        interview2.setDetails("Interview 2 content");
         interview2.setCreatedAt(LocalDateTime.now());
         entityManager.persist(interview2);
 
@@ -55,7 +55,7 @@ class InterviewRepositoryTest {
 
         assertNotNull(interviews);
         assertEquals(2, interviews.size());
-        assertEquals("Interview 1 content", interviews.get(0).getContent());
-        assertEquals("Interview 2 content", interviews.get(1).getContent());
+        assertEquals("Interview 1 content", interviews.get(0).getDetails());
+        assertEquals("Interview 2 content", interviews.get(1).getDetails());
     }
 }

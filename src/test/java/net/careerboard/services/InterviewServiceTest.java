@@ -52,7 +52,7 @@ class InterviewServiceTest {
         interviewRequest.setUserId(1L);
         interviewRequest.setImageNames(Arrays.asList("image1.jpg", "image2.jpg"));
         interviewRequest.setDescription("Interview title");
-        interviewRequest.setContent("Interview content");
+        interviewRequest.setDetails("Interview content");
         interviewRequest.setStatus("PUBLISHED");
         when(interviewRepository.save(any(Interview.class))).thenReturn(interview);
 
