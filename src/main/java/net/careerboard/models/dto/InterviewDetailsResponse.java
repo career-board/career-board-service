@@ -23,4 +23,5 @@ public class InterviewDetailsResponse {
     private LocalDateTime interviewDate;
     private List<InterviewImageDto> images;
     private long typeId;
+    private String typeName;
 }
