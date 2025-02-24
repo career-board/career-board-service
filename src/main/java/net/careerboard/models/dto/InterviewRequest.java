@@ -12,11 +12,11 @@ import java.util.List;
 public class InterviewRequest {
     private Long userId;
     private String description;
-    private String content;
+    private String details;
     private String status;
     private String company;
     private LocalDateTime interviewDate;
     private List<String> imageNames;
-    private String moderatorComment;
+    private String editorial;
     private long typeId;
 }

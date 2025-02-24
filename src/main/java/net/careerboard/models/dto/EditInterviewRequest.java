@@ -11,11 +11,11 @@ import java.util.List;
 public class EditInterviewRequest {
     private Long userId;
     private String description;
-    private String content;
+    private String details;
     private String status;
     private List<InterviewImageDto> images;
     private Long interviewId;
-    private String moderatorComment;
+    private String editorial;
     private Long typeId;
     private String company;
     private LocalDateTime interviewDate;

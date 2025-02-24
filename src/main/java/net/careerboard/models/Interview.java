@@ -49,7 +49,7 @@ public class Interview {
     private String description;
 
     @Column(nullable = false)
-    private String content;
+    private String details;  
 
     @Column(nullable = false)
     private String company;
@@ -75,8 +75,8 @@ public class Interview {
     @JsonManagedReference
     private List<InterviewImage> images;
 
-    @Column(name = "moderator_comment")
-    private String moderatorComment;
+    @Column(name = "editorial")  
+    private String editorial;
 
     public String getUsername() {
         return user.getUsername();

@@ -14,11 +14,11 @@ public class InterviewDetailsResponse {
     private Long userId;
     private String username;
     private String description;
-    private String content;
+    private String details;
     private String status;
     private Long interviewId;
     private LocalDateTime createdAt;
-    private String moderatorComment;
+    private String editorial;
     private String company;
     private LocalDateTime interviewDate;
     private List<InterviewImageDto> images;
