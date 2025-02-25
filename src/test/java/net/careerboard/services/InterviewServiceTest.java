@@ -12,6 +12,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -85,9 +88,9 @@ class InterviewServiceTest {
         List<Interview> interviews = Arrays.asList(new Interview(), new Interview());
         when(interviewRepository.findByUserUserId(userId)).thenReturn(interviews);
 
-        List<InterviewDetailsResponse> foundInterviews = interviewService.findInterviewsByUserId(userId);
+        Page<InterviewDetailsResponse> foundInterviews = interviewService.findInterviewsByUserId(userId, PageRequest.of(0, 10));
 
-        assertEquals(interviews.size(), foundInterviews.size());
+        assertEquals(interviews.size(), foundInterviews.toList().size());
         verify(interviewRepository, times(1)).findByUserUserId(userId);
     }
 

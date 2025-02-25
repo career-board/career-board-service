@@ -102,11 +102,9 @@ public class InterviewService {
                 .build();
     }
 
-    public List<InterviewDetailsResponse> findInterviewsByUserId(Long userId) {
-        return this.interviewRepository.findByUserUserIdOrderByCreatedAtDesc(userId)
-                .stream()
-                .map(InterviewService::mapToInterviewDetailsResponse)
-                .toList();
+    public Page<InterviewDetailsResponse> findInterviewsByUserId(Long userId, Pageable pageable) {
+        Page<Interview> interviews = this.interviewRepository.findByUserUserIdOrderByCreatedAtDesc(userId, pageable);
+        return interviews.map(InterviewService::mapToInterviewDetailsResponse);
     }
 
     public List<Interview> findPublishedInterviewsByUserId(Long userId) {
