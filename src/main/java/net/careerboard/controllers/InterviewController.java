@@ -35,13 +35,13 @@ public class InterviewController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<InterviewDetailsResponse>> getInterviewsByUserId(@PathVariable Long userId) {
-        List<InterviewDetailsResponse> interviews = interviewService.findInterviewsByUserId(userId);
-        if (interviews.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.ok(interviews);
-        }
+    public ResponseEntity<Page<InterviewDetailsResponse>> getInterviewsByUserId(
+            @PathVariable Long userId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<InterviewDetailsResponse> interviews = interviewService.findInterviewsByUserId(userId, pageable);
+        return ResponseEntity.ok(interviews);
     }
 
     // Method to fetch a interview by its ID
