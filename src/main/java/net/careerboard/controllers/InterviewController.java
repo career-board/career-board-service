@@ -20,7 +20,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/post")
+@RequestMapping("/api/interviews")
 public class InterviewController {
     private final InterviewService interviewService;
     private final UserService userService;
